@@ -27,6 +27,7 @@ export default class Diagram extends React.Component<
     var diagramEngine = new DiagramEngine();
     diagramEngine.installDefaultFactories();
     var model = new DiagramModel();
+    model.setZoomLevel(200);
 
     var node1 = new DefaultNodeModel("Node 1", "rgb(0,192,255)");
     let port1 = node1.addOutPort("Out");
@@ -38,19 +39,41 @@ export default class Diagram extends React.Component<
     node2.setPosition(400, 100);
 
     // link the ports
-    let link1 = port1.link(port2);
+    const link1 = port1.link(port2);
     (link1 as DefaultLinkModel).addLabel("Hello World!");
 
     //4) add the models to the root graph
     model.addAll(node1, node2, link1);
-
-    //5) load model into engine
     diagramEngine.setDiagramModel(model);
 
     return (
       <WorkspaceWidget
         buttons={
-          <button onClick={() => diagramEngine.zoomToFit()}>Zoom to fit</button>
+          <>
+            <button onClick={() => diagramEngine.zoomToFit()}>
+              Zoom to fit
+            </button>
+            <button
+              onClick={() => {
+                var zoomLevel = diagramEngine.getDiagramModel().getZoomLevel();
+                console.log(zoomLevel);
+                diagramEngine.getDiagramModel().setZoomLevel(zoomLevel + 10);
+                diagramEngine.repaintCanvas();
+              }}
+            >
+              +
+            </button>
+            <button
+              onClick={() => {
+                var zoomLevel = diagramEngine.getDiagramModel().getZoomLevel();
+                console.log(zoomLevel);
+                diagramEngine.getDiagramModel().setZoomLevel(zoomLevel - 10);
+                diagramEngine.repaintCanvas();
+              }}
+            >
+              -
+            </button>
+          </>
         }
       >
         <DiagramWidget
