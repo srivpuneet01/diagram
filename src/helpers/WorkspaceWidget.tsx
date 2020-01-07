@@ -1,4 +1,5 @@
 import * as React from "react";
+import "./workspace.scss";
 
 export interface WorkspaceWidgetProps {
   buttons?: any;

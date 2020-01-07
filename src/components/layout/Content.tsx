@@ -1,14 +1,16 @@
-import React from "react"
-import Header from "./Header"
-import Diagram from "../Diagram"
-import Sidebar from "./Sidebar"
+import React from "react";
+import Header from "./Header";
+import Diagram from "../Diagram";
+import Sidebar from "./Sidebar";
 
-const Content = ()=>{
-    return(<div>
-        <Header/>
-        <Sidebar/>
-        <Diagram/>
-    </div>)
-}
+const Content = () => {
+  return (
+    <>
+      <Header />
+      <Sidebar />
+      <Diagram />
+    </>
+  );
+};
 
-export default Content
+export default Content;

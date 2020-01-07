@@ -1,5 +1,5 @@
 import React from "react";
-import "../sass/";
+import "../sass/widgets.scss";
 import {
   DiagramEngine,
   DiagramModel,
@@ -48,8 +48,15 @@ export default class Diagram extends React.Component<
     diagramEngine.setDiagramModel(model);
 
     return (
-      <WorkspaceWidget>
-        <DiagramWidget diagramEngine={diagramEngine}></DiagramWidget>
+      <WorkspaceWidget
+        buttons={
+          <button onClick={() => diagramEngine.zoomToFit()}>Zoom to fit</button>
+        }
+      >
+        <DiagramWidget
+          className="srd-demo-canvas"
+          diagramEngine={diagramEngine}
+        ></DiagramWidget>
       </WorkspaceWidget>
     );
   }
