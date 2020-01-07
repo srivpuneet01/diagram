@@ -1,5 +1,7 @@
 import React from "react";
 import "../sass/widgets.scss";
+import * as md from "react-icons/md";
+import * as fa from "react-icons/fa";
 import {
   DiagramEngine,
   DiagramModel,
@@ -51,7 +53,7 @@ export default class Diagram extends React.Component<
         buttons={
           <>
             <button onClick={() => diagramEngine.zoomToFit()}>
-              Zoom to fit
+              <fa.FaArrowsAltH />
             </button>
             <button
               onClick={() => {
@@ -61,7 +63,7 @@ export default class Diagram extends React.Component<
                 diagramEngine.repaintCanvas();
               }}
             >
-              +
+              <md.MdZoomIn />
             </button>
             <button
               onClick={() => {
@@ -71,7 +73,7 @@ export default class Diagram extends React.Component<
                 diagramEngine.repaintCanvas();
               }}
             >
-              -
+              <md.MdZoomOut />
             </button>
           </>
         }
