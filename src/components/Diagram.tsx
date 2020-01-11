@@ -2,14 +2,15 @@ import React from "react";
 import "../sass/widgets.scss";
 import * as md from "react-icons/md";
 import * as fa from "react-icons/fa";
-import {
-  DiagramEngine,
-  DiagramModel,
-  DefaultNodeModel,
-  DefaultLinkModel,
-  DiagramWidget
-} from "@projectstorm/react-diagrams";
+import * as SRD from "@projectstorm/react-diagrams";
 import { WorkspaceWidget } from "../helpers/WorkspaceWidget";
+import { CableNodeFactory } from "../helpers/Nodes/Cable/CableNodeFactory";
+import { SimplePortFactory } from "../helpers/Nodes/Terminal/SimplePortFactory";
+import { TerminalPortModel } from "../helpers/Nodes/Terminal/TerminalPortModel";
+import { CablePortModel } from "../helpers/Nodes/Cable/CablePortModel";
+import { TerminalNodeFactory } from "../helpers/Nodes/Terminal/TerminalNodeFactory";
+import { CableNodeModel } from "../helpers/Nodes/Cable/CableNodeModel";
+import { TerminalNodeModel } from "../helpers/Nodes/Terminal/TerminalNodeModel";
 
 export interface WorkspaceWidgetProps {
   buttons?: any;
@@ -26,26 +27,27 @@ export default class Diagram extends React.Component<
   }
 
   render() {
-    var diagramEngine = new DiagramEngine();
+    var diagramEngine = new SRD.DiagramEngine();
     diagramEngine.installDefaultFactories();
-    var model = new DiagramModel();
+
+    // register some other factories as well
+    diagramEngine.registerPortFactory(new SimplePortFactory("terminal", config => new TerminalPortModel()));
+    diagramEngine.registerPortFactory(new SimplePortFactory("cable", config => new CablePortModel()));
+    diagramEngine.registerNodeFactory(new CableNodeFactory());
+    diagramEngine.registerNodeFactory(new TerminalNodeFactory());
+  
+    var model = new SRD.DiagramModel();
     model.setZoomLevel(200);
 
-    var node1 = new DefaultNodeModel("Node 1", "rgb(0,192,255)");
-    let port1 = node1.addOutPort("Out");
+    var node1 = new CableNodeModel("Cable");
     node1.setPosition(100, 100);
 
     //3-B) create another default node
-    var node2 = new DefaultNodeModel("Node 2", "rgb(192,255,0)");
-    let port2 = node2.addInPort("In");
+    var node2 = new TerminalNodeModel();
     node2.setPosition(400, 100);
 
-    // link the ports
-    const link1 = port1.link(port2);
-    (link1 as DefaultLinkModel).addLabel("Hello World!");
-
     //4) add the models to the root graph
-    model.addAll(node1, node2, link1);
+    model.addAll(node1, node2);
     diagramEngine.setDiagramModel(model);
 
     return (
@@ -78,10 +80,10 @@ export default class Diagram extends React.Component<
           </>
         }
       >
-        <DiagramWidget
+        <SRD.DiagramWidget
           className="srd-demo-canvas"
           diagramEngine={diagramEngine}
-        ></DiagramWidget>
+        ></SRD.DiagramWidget>
       </WorkspaceWidget>
     );
   }
